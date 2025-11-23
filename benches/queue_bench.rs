@@ -10,10 +10,6 @@ use std::sync::mpsc::sync_channel;
 const MESSAGES: usize = 1_000_000;
 const BUFFER_SIZE: usize = 1024;
 
-// ============================================================================
-// 1:1 Producer:Consumer Benchmarks
-// ============================================================================
-
 fn bench_1p_1c_blazing(c: &mut Criterion) {
     let mut group = c.benchmark_group("1p_1c");
     group.throughput(Throughput::Elements(MESSAGES as u64));
@@ -107,10 +103,6 @@ fn bench_1p_1c_blazing(c: &mut Criterion) {
     group.finish();
 }
 
-// ============================================================================
-// N:1 Producers:Consumer Benchmarks
-// ============================================================================
-
 fn bench_np_1c(c: &mut Criterion) {
     let mut group = c.benchmark_group("4p_1c");
     group.throughput(Throughput::Elements(MESSAGES as u64));
@@ -202,10 +194,6 @@ fn bench_np_1c(c: &mut Criterion) {
     group.finish();
 }
 
-// ============================================================================
-// 1:N Producer:Consumers Benchmarks
-// ============================================================================
-
 fn bench_1p_nc(c: &mut Criterion) {
     let mut group = c.benchmark_group("1p_4c");
     group.throughput(Throughput::Elements(MESSAGES as u64));
@@ -296,10 +284,6 @@ fn bench_1p_nc(c: &mut Criterion) {
     group.finish();
 }
 
-// ============================================================================
-// N:M Producers:Consumers Benchmarks
-// ============================================================================
-
 fn bench_np_mc(c: &mut Criterion) {
     let mut group = c.benchmark_group("4p_4c");
     group.throughput(Throughput::Elements(MESSAGES as u64));
@@ -368,7 +352,6 @@ fn bench_np_mc(c: &mut Criterion) {
         });
     });
 
-    // Flume
     group.bench_function("flume", |b| {
         b.iter(|| {
             let (tx, rx) = flume_bounded::<usize>(BUFFER_SIZE);

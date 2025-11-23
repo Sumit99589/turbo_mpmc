@@ -1,5 +1,3 @@
-//! Integration tests for blazing-mpmc
-
 use blazing_mpmc::{Queue, RecvError, SendError};
 use std::sync::Arc;
 use std::thread;
@@ -29,12 +27,10 @@ fn test_fifo_order() {
 fn test_full_queue() {
     let queue = Queue::<i32, 4>::new();
     
-    // Fill the queue
     for i in 0..4 {
         assert!(queue.try_send(i).is_ok());
     }
     
-    // Next send should fail
     assert_eq!(queue.try_send(99), Err(SendError(99)));
 }
 
@@ -95,7 +91,6 @@ fn test_mpsc_threaded() {
     let queue = Arc::new(Queue::<usize, 512>::new());
     let mut handles = vec![];
     
-    // Spawn producers
     for p in 0..PRODUCERS {
         let q = queue.clone();
         handles.push(thread::spawn(move || {
@@ -107,7 +102,6 @@ fn test_mpsc_threaded() {
         }));
     }
     
-    // Single consumer
     let q = queue.clone();
     let consumer = thread::spawn(move || {
         let mut received = vec![];
@@ -141,7 +135,6 @@ fn test_spmc_threaded() {
     let queue = Arc::new(Queue::<usize, 512>::new());
     let mut handles = vec![];
     
-    // Single producer
     let q = queue.clone();
     handles.push(thread::spawn(move || {
         for i in 0..TOTAL_MESSAGES {
@@ -151,7 +144,6 @@ fn test_spmc_threaded() {
         }
     }));
     
-    // Multiple consumers
     let consumed_count = Arc::new(std::sync::atomic::AtomicUsize::new(0));
     for _ in 0..CONSUMERS {
         let q = queue.clone();
@@ -193,7 +185,6 @@ fn test_mpmc_threaded() {
     let queue = Arc::new(Queue::<usize, 512>::new());
     let mut handles = vec![];
     
-    // Spawn producers
     for p in 0..PRODUCERS {
         let q = queue.clone();
         handles.push(thread::spawn(move || {
@@ -205,7 +196,6 @@ fn test_mpmc_threaded() {
         }));
     }
     
-    // Spawn consumers
     let consumed_count = Arc::new(std::sync::atomic::AtomicUsize::new(0));
     for _ in 0..CONSUMERS {
         let q = queue.clone();
@@ -257,7 +247,6 @@ fn test_drop_elements() {
         for _ in 0..5 {
             queue.send(DropCounter).unwrap();
         }
-        // Queue dropped here, should drop all 5 elements
     }
     
     assert_eq!(DROP_COUNT.load(Ordering::Relaxed), 5);
@@ -303,7 +292,6 @@ fn test_alternating_send_recv() {
 fn test_wrap_around() {
     let queue = Queue::<usize, 8>::new();
     
-    // Fill, empty, fill again multiple times to test wrap-around
     for round in 0..10 {
         for i in 0..8 {
             queue.send(round * 100 + i).unwrap();

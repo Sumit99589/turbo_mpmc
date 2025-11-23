@@ -1,5 +1,3 @@
-//! Quick performance test example
-
 use blazing_mpmc::Queue;
 use std::sync::Arc;
 use std::thread;

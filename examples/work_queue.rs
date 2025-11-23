@@ -1,5 +1,3 @@
-//! Work queue example with multiple workers
-
 use blazing_mpmc::Queue;
 use std::sync::Arc;
 use std::thread;
@@ -11,11 +9,9 @@ fn main() {
     const NUM_WORKERS: usize = 4;
     const NUM_JOBS: usize = 20;
 
-    // Create queues for jobs and results
     let jobs = Arc::new(Queue::<String, 128>::new());
     let results = Arc::new(Queue::<String, 128>::new());
 
-    // Job producer
     let jobs_tx = jobs.clone();
     let producer = thread::spawn(move || {
         for i in 0..NUM_JOBS {
@@ -29,7 +25,6 @@ fn main() {
         println!("✅ All jobs enqueued!");
     });
 
-    // Workers
     let mut workers = vec![];
     for worker_id in 0..NUM_WORKERS {
         let jobs_rx = jobs.clone();
@@ -42,7 +37,6 @@ fn main() {
                     Ok(job) => {
                         println!("🔨 Worker {} processing: {}", worker_id, job);
                         
-                        // Simulate work
                         thread::sleep(Duration::from_millis(200));
                         
                         let result = format!("{} -> completed by worker {}", job, worker_id);
@@ -53,7 +47,6 @@ fn main() {
                         processed += 1;
                     }
                     Err(_) => {
-                        // No more jobs, check if we're done
                         thread::sleep(Duration::from_millis(10));
                         if jobs_rx.is_empty() && processed > 0 {
                             break;
@@ -65,7 +58,6 @@ fn main() {
         }));
     }
 
-    // Result collector
     let results_rx = results.clone();
     let collector = thread::spawn(move || {
         let mut collected = 0;
@@ -83,7 +75,6 @@ fn main() {
         println!("✅ All results collected!");
     });
 
-    // Wait for completion
     producer.join().unwrap();
     for worker in workers {
         worker.join().unwrap();
