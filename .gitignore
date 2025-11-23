@@ -1,0 +1,33 @@
+# === Rust Build Artifacts ===
+/target/
+/debug/
+/release/
+
+# === Cargo ===
+# If this is a library crate, you may ignore Cargo.lock (optional)
+# Cargo.lock
+
+# === IDE Files ===
+.vscode/
+.idea/
+*.code-workspace
+
+# === OS Files ===
+.DS_Store
+Thumbs.db
+
+# === Logs and Temp Files ===
+*.log
+*.tmp
+
+# === Bench output ===
+criterion-target/
+benchmarks.json
+
+# === Scripts (optional, if they are machine-local) ===
+verify.ps1
+verify.sh
+
+# === Misc ===
+*.swp
+*.swo

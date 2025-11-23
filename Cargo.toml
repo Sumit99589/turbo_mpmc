@@ -1,0 +1,50 @@
+[package]
+name = "blazing-mpmc"
+version = "0.1.0"
+edition = "2021"
+authors = ["Your Name"]
+license = "MIT OR Apache-2.0"
+description = "A blazingly fast lock-free MPMC queue that beats crossbeam-channel"
+repository = "https://github.com/yourusername/blazing-mpmc"
+keywords = ["mpmc", "queue", "lock-free", "concurrent", "channel"]
+categories = ["concurrency", "data-structures"]
+
+[lib]
+name = "blazing_mpmc"
+path = "src/lib.rs"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(loom)'] }
+
+[dependencies]
+# Core dependencies for cache-line alignment
+crossbeam-utils = "0.8"
+
+[dev-dependencies]
+# Benchmarking
+criterion = { version = "0.5", features = ["html_reports"] }
+
+# Competitors to benchmark against
+crossbeam-channel = "0.5"
+flume = "0.11"
+# xqueue = "0.3"  # Less common, may need to find alternative
+
+# Testing
+loom = "0.7"
+
+[target.'cfg(loom)'.dependencies]
+loom = "0.7"
+
+[[bench]]
+name = "queue_bench"
+harness = false
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+
+[profile.bench]
+opt-level = 3
+lto = true
+codegen-units = 1
