@@ -1,4 +1,4 @@
-use blazing_mpmc::Queue;
+use turbo_mpmc::Queue;
 use std::sync::Arc;
 use std::thread;
 use std::time::Duration;

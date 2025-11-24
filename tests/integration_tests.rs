@@ -1,4 +1,4 @@
-use blazing_mpmc::{Queue, RecvError, SendError};
+use turbo_mpmc::{Queue, RecvError, SendError};
 use std::sync::Arc;
 use std::thread;
 

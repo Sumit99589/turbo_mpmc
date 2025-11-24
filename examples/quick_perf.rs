@@ -1,4 +1,4 @@
-use blazing_mpmc::Queue;
+use turbo_mpmc::Queue;
 use std::sync::Arc;
 use std::thread;
 use std::time::Instant;
@@ -7,7 +7,7 @@ const MESSAGES: usize = 1_000_000;
 const BUFFER_SIZE: usize = 1024;
 
 fn main() {
-    println!("Blazing MPMC Performance Test");
+    println!("Turbo MPMC Performance Test");
     println!("==============================\n");
 
     // 1:1 Test

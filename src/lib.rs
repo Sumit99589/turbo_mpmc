@@ -1,4 +1,4 @@
-//! # blazing_mpmc - High-Performance Lock-Free MPMC Queue
+//! # turbo_mpmc - High-Performance Lock-Free MPMC Queue
 //!
 //! A blazingly fast, lock-free Multi-Producer Multi-Consumer (MPMC) queue implementation
 //! based on Dmitry Vyukov's bounded MPMC queue design. This implementation uses a ticket-based
@@ -23,7 +23,7 @@
 //! ## Quick Start
 //!
 //! ```rust
-//! use blazing_mpmc::Queue;
+//! use turbo_mpmc::Queue;
 //! use std::sync::Arc;
 //! use std::thread;
 //!
@@ -54,7 +54,7 @@
 //! For maximum throughput when sending/receiving multiple items, use the batch APIs:
 //!
 //! ```rust
-//! use blazing_mpmc::Queue;
+//! use turbo_mpmc::Queue;
 //!
 //! let queue = Queue::<i32, 64>::new();
 //!
@@ -81,7 +81,7 @@
 //! - A power of two (for efficient modulo operations using bitwise AND)
 //!
 //! ```rust,should_panic
-//! use blazing_mpmc::Queue;
+//! use turbo_mpmc::Queue;
 //!
 //! // This will panic - capacity must be power of 2
 //! let queue = Queue::<i32, 10>::new();
@@ -134,7 +134,7 @@ unsafe impl<T: Send> Sync for Slot<T> {}
 /// # Examples
 ///
 /// ```rust
-/// use blazing_mpmc::{Queue, SendError};
+/// use turbo_mpmc::{Queue, SendError};
 ///
 /// let queue = Queue::<i32, 4>::new();
 ///
@@ -160,7 +160,7 @@ impl<T> fmt::Display for SendError<T> {
 /// # Examples
 ///
 /// ```rust
-/// use blazing_mpmc::{Queue, RecvError};
+/// use turbo_mpmc::{Queue, RecvError};
 ///
 /// let queue = Queue::<i32, 4>::new();
 ///
@@ -200,7 +200,7 @@ const SPIN_LIMIT: usize = 64;
 /// Basic usage:
 ///
 /// ```rust
-/// use blazing_mpmc::Queue;
+/// use turbo_mpmc::Queue;
 ///
 /// let queue = Queue::<i32, 16>::new();
 /// queue.send(42);
@@ -210,7 +210,7 @@ const SPIN_LIMIT: usize = 64;
 /// Multi-threaded usage:
 ///
 /// ```rust
-/// use blazing_mpmc::Queue;
+/// use turbo_mpmc::Queue;
 /// use std::sync::Arc;
 /// use std::thread;
 ///
@@ -260,14 +260,14 @@ impl<T, const CAP: usize> Queue<T, CAP> {
     /// # Examples
     ///
     /// ```rust
-    /// use blazing_mpmc::Queue;
+    /// use turbo_mpmc::Queue;
     ///
     /// // Valid: power of 2
     /// let queue = Queue::<i32, 16>::new();
     /// ```
     ///
     /// ```rust,should_panic
-    /// use blazing_mpmc::Queue;
+    /// use turbo_mpmc::Queue;
     ///
     /// // Panics: not a power of 2
     /// let queue = Queue::<i32, 10>::new();
@@ -301,7 +301,7 @@ impl<T, const CAP: usize> Queue<T, CAP> {
     /// # Examples
     ///
     /// ```rust
-    /// use blazing_mpmc::Queue;
+    /// use turbo_mpmc::Queue;
     ///
     /// let queue = Queue::<String, 16>::new();
     /// queue.send("Hello".to_string());
@@ -311,7 +311,7 @@ impl<T, const CAP: usize> Queue<T, CAP> {
     /// Multi-threaded example:
     ///
     /// ```rust
-    /// use blazing_mpmc::Queue;
+    /// use turbo_mpmc::Queue;
     /// use std::sync::Arc;
     /// use std::thread;
     ///
@@ -356,7 +356,7 @@ impl<T, const CAP: usize> Queue<T, CAP> {
     /// # Examples
     ///
     /// ```rust
-    /// use blazing_mpmc::Queue;
+    /// use turbo_mpmc::Queue;
     ///
     /// let queue = Queue::<String, 16>::new();
     /// queue.send("Hello".to_string());
@@ -367,7 +367,7 @@ impl<T, const CAP: usize> Queue<T, CAP> {
     /// Multi-threaded example:
     ///
     /// ```rust
-    /// use blazing_mpmc::Queue;
+    /// use turbo_mpmc::Queue;
     /// use std::sync::Arc;
     /// use std::thread;
     ///
@@ -418,7 +418,7 @@ impl<T, const CAP: usize> Queue<T, CAP> {
     /// # Examples
     ///
     /// ```rust
-    /// use blazing_mpmc::{Queue, SendError};
+    /// use turbo_mpmc::{Queue, SendError};
     ///
     /// let queue = Queue::<i32, 4>::new();
     ///
@@ -471,7 +471,7 @@ impl<T, const CAP: usize> Queue<T, CAP> {
     /// # Examples
     ///
     /// ```rust
-    /// use blazing_mpmc::{Queue, RecvError};
+    /// use turbo_mpmc::{Queue, RecvError};
     ///
     /// let queue = Queue::<i32, 4>::new();
     ///
@@ -534,7 +534,7 @@ impl<T, const CAP: usize> Queue<T, CAP> {
     /// # Examples
     ///
     /// ```rust
-    /// use blazing_mpmc::Queue;
+    /// use turbo_mpmc::Queue;
     ///
     /// let queue = Queue::<i32, 64>::new();
     ///
@@ -550,7 +550,7 @@ impl<T, const CAP: usize> Queue<T, CAP> {
     /// High-throughput example:
     ///
     /// ```rust
-    /// use blazing_mpmc::Queue;
+    /// use turbo_mpmc::Queue;
     /// use std::sync::Arc;
     /// use std::thread;
     ///
@@ -624,7 +624,7 @@ impl<T, const CAP: usize> Queue<T, CAP> {
     /// # Examples
     ///
     /// ```rust
-    /// use blazing_mpmc::Queue;
+    /// use turbo_mpmc::Queue;
     ///
     /// let queue = Queue::<i32, 64>::new();
     ///
@@ -639,7 +639,7 @@ impl<T, const CAP: usize> Queue<T, CAP> {
     /// High-throughput example:
     ///
     /// ```rust
-    /// use blazing_mpmc::Queue;
+    /// use turbo_mpmc::Queue;
     /// use std::sync::Arc;
     /// use std::thread;
     ///
@@ -703,7 +703,7 @@ impl<T, const CAP: usize> Queue<T, CAP> {
     /// # Examples
     ///
     /// ```rust
-    /// use blazing_mpmc::Queue;
+    /// use turbo_mpmc::Queue;
     ///
     /// let queue = Queue::<i32, 16>::new();
     /// assert_eq!(queue.capacity(), 16);
@@ -719,7 +719,7 @@ impl<T, const CAP: usize> Queue<T, CAP> {
     /// # Examples
     ///
     /// ```rust
-    /// use blazing_mpmc::Queue;
+    /// use turbo_mpmc::Queue;
     ///
     /// let queue = Queue::<i32, 16>::new();
     /// assert_eq!(queue.len(), 0);
@@ -745,7 +745,7 @@ impl<T, const CAP: usize> Queue<T, CAP> {
     /// # Examples
     ///
     /// ```rust
-    /// use blazing_mpmc::Queue;
+    /// use turbo_mpmc::Queue;
     ///
     /// let queue = Queue::<i32, 16>::new();
     /// assert!(queue.is_empty());

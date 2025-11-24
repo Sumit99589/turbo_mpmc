@@ -1,9 +1,9 @@
-use blazing_mpmc::Queue;
+use turbo_mpmc::Queue;
 use std::sync::Arc;
 use std::thread;
 
 fn main() {
-    println!("Blazing MPMC - Simple Example\n");
+    println!("Turbo MPMC - Simple Example\n");
 
     let queue = Arc::new(Queue::<String, 16>::new());
 

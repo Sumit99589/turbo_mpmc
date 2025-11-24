@@ -1,16 +1,16 @@
 [package]
-name = "blazing-mpmc"
+name = "turbo-mpmc"
 version = "0.1.0"
 edition = "2021"
-authors = ["Your Name"]
+authors = ["Sumit Bhatt"]
 license = "MIT OR Apache-2.0"
-description = "A blazingly fast lock-free MPMC queue that beats crossbeam-channel"
-repository = "https://github.com/yourusername/blazing-mpmc"
+description = "A blazingly fast lock-free MPMC queue that beats crossbeam-channel on SPSC workloads."
+repository = "https://github.com/Sumit99589/turbo_mpmc"
 keywords = ["mpmc", "queue", "lock-free", "concurrent", "channel"]
 categories = ["concurrency", "data-structures"]
 
 [lib]
-name = "blazing_mpmc"
+name = "turbo_mpmc"
 path = "src/lib.rs"
 
 [lints.rust]

@@ -1,6 +1,6 @@
 #![cfg(loom)]
 
-use blazing_mpmc::Queue;
+use turbo_mpmc::Queue;
 use loom::sync::Arc;
 use loom::thread;
 

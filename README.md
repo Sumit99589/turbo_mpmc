@@ -23,13 +23,13 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-blazing-mpmc = "0.1.0"
+turbo-mpmc = "0.1.0"
 ```
 
 ### Basic Usage
 
 ```rust
-use blazing_mpmc::Queue;
+use turbo_mpmc::Queue;
 use std::sync::Arc;
 use std::thread;
 

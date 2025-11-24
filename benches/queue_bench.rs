@@ -2,7 +2,7 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion, Throughpu
 use std::sync::Arc;
 use std::thread;
 
-use blazing_mpmc::Queue as BlazingQueue;
+use turbo_mpmc::Queue as TurboQueue;
 use crossbeam_channel::bounded;
 use flume::bounded as flume_bounded;
 use std::sync::mpsc::sync_channel;
@@ -10,13 +10,13 @@ use std::sync::mpsc::sync_channel;
 const MESSAGES: usize = 1_000_000;
 const BUFFER_SIZE: usize = 1024;
 
-fn bench_1p_1c_blazing(c: &mut Criterion) {
+fn bench_1p_1c_turbo(c: &mut Criterion) {
     let mut group = c.benchmark_group("1p_1c");
     group.throughput(Throughput::Elements(MESSAGES as u64));
 
-    group.bench_function("blazing_mpmc", |b| {
+    group.bench_function("turbo_mpmc", |b| {
         b.iter(|| {
-            let queue = Arc::new(BlazingQueue::<usize, BUFFER_SIZE>::new());
+            let queue = Arc::new(TurboQueue::<usize, BUFFER_SIZE>::new());
             let q_send = queue.clone();
             let q_recv = queue.clone();
 
@@ -109,9 +109,9 @@ fn bench_np_1c(c: &mut Criterion) {
     const PRODUCERS: usize = 4;
     const MSGS_PER_PRODUCER: usize = MESSAGES / PRODUCERS;
 
-    group.bench_function("blazing_mpmc", |b| {
+    group.bench_function("turbo_mpmc", |b| {
         b.iter(|| {
-            let queue = Arc::new(BlazingQueue::<usize, BUFFER_SIZE>::new());
+            let queue = Arc::new(TurboQueue::<usize, BUFFER_SIZE>::new());
             let mut handles = vec![];
 
             for p in 0..PRODUCERS {
@@ -200,9 +200,9 @@ fn bench_1p_nc(c: &mut Criterion) {
     const CONSUMERS: usize = 4;
     const MSGS_PER_CONSUMER: usize = MESSAGES / CONSUMERS;
 
-    group.bench_function("blazing_mpmc", |b| {
+    group.bench_function("turbo_mpmc", |b| {
         b.iter(|| {
-            let queue = Arc::new(BlazingQueue::<usize, BUFFER_SIZE>::new());
+            let queue = Arc::new(TurboQueue::<usize, BUFFER_SIZE>::new());
             let mut handles = vec![];
 
             let q = queue.clone();
@@ -292,9 +292,9 @@ fn bench_np_mc(c: &mut Criterion) {
     const MSGS_PER_PRODUCER: usize = MESSAGES / PRODUCERS;
     const MSGS_PER_CONSUMER: usize = MESSAGES / CONSUMERS;
 
-    group.bench_function("blazing_mpmc", |b| {
+    group.bench_function("turbo_mpmc", |b| {
         b.iter(|| {
-            let queue = Arc::new(BlazingQueue::<usize, BUFFER_SIZE>::new());
+            let queue = Arc::new(TurboQueue::<usize, BUFFER_SIZE>::new());
             let mut handles = vec![];
 
             for p in 0..PRODUCERS {
@@ -387,7 +387,7 @@ fn bench_np_mc(c: &mut Criterion) {
 
 criterion_group!(
     benches,
-    bench_1p_1c_blazing,
+    bench_1p_1c_turbo,
     bench_np_1c,
     bench_1p_nc,
     bench_np_mc

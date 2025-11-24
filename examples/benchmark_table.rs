@@ -1,4 +1,4 @@
-use blazing_mpmc::Queue as TurboQueue;
+use turbo_mpmc::Queue as TurboQueue;
 use crossbeam_channel::bounded;
 use flume::bounded as flume_bounded;
 use std::sync::Arc;
